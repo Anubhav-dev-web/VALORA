@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUXE - Premium Fashion & Accessories</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header/Navigation -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-left">
+            <a href="index.html" class="logo">VALORA</a>
+          </div>
+
+          <div class="nav-center">
+            <div class="nav-item dropdown">
+              <span class="nav-link"
+                >Categories <i class="fas fa-chevron-down"></i
+              ></span>
+              <div class="dropdown-content">
+                <a href="watches.html">Watches</a>
+                <a href="shoes.html">Shoes</a>
+                <a href="glasses.html">Glasses</a>
+                <a href="bags.html">Bags</a>
+                <a href="accessories.html">Other Accessories</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="nav-right">
+            <button class="nav-icon" id="wishlist-btn">
+              <i class="fas fa-heart"></i>
+              <span class="badge" id="wishlist-count">0</span>
+            </button>
+            <button class="nav-icon" id="cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="badge" id="cart-count">0</span>
+            </button>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav" id="mobile-nav">
+          <div class="mobile-nav-content">
+            <a href="index.html" class="mobile-nav-link">Home</a>
+            <div class="mobile-nav-dropdown">
+              <button class="mobile-nav-toggle">
+                Categories <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="mobile-nav-submenu">
+                <a href="watches.html" class="mobile-nav-link">Watches</a>
+                <a href="shoes.html" class="mobile-nav-link">Shoes</a>
+                <a href="glasses.html" class="mobile-nav-link">Glasses</a>
+                <a href="bags.html" class="mobile-nav-link">Bags</a>
+                <a href="accessories.html" class="mobile-nav-link"
+                  >Other Accessories</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="hero-title">Where Luxury Evolves</h1>
+          <p class="hero-subtitle">
+            A curated edit of premium fashion and accessories that set the
+            standard for elegance and style.
+          </p>
+          <button class="cta-button">Explore Collection</button>
+        </div>
+        <div class="hero-image">
+          <img
+            src="https://plus.unsplash.com/premium_photo-1661964205360-b0621b5a9366?q=80&w=1138&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Luxury Fashion"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+      <div class="container">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="categories-grid">
+          <div class="category-card" data-category="watches">
+            <div class="category-image">
+              <img
+                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                alt="Watches"
+              />
+            </div>
+            <h3 class="category-title">Watches</h3>
+            <p class="category-subtitle">Timeless Elegance</p>
+          </div>
+
+          <div class="category-card" data-category="shoes">
+            <div class="category-image">
+              <img
+                src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                alt="Shoes"
+              />
+            </div>
+            <h3 class="category-title">Shoes</h3>
+            <p class="category-subtitle">Step in Style</p>
+          </div>
+
+          <div class="category-card" data-category="glasses">
+            <div class="category-image">
+              <img
+                src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                alt="Glasses"
+              />
+            </div>
+            <h3 class="category-title">Glasses</h3>
+            <p class="category-subtitle">Vision & Style</p>
+          </div>
+
+          <div class="category-card" data-category="bags">
+            <div class="category-image">
+              <img
+                src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                alt="Bags"
+              />
+            </div>
+            <h3 class="category-title">Bags</h3>
+            <p class="category-subtitle">Luxury Essentials</p>
+          </div>
+
+          <div class="category-card" data-category="accessories">
+            <div class="category-image">
+              <img
+                src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                alt="Accessories"
+              />
+            </div>
+            <h3 class="category-title">Accessories</h3>
+            <p class="category-subtitle">Perfect Details</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sale Banner -->
+    <section class="sale-banner">
+      <div class="container">
+        <div class="sale-content">
+          <h2>Sale is Live</h2>
+          <p>Up to 50% off on selected premium items</p>
+          <button class="sale-cta">Shop Now</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+      <div class="container">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid" id="featured-products-grid">
+          <!-- Products will be loaded dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>VALORA</h3>
+            <p>
+              Defining luxury through timeless elegance and exceptional
+              craftsmanship.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="watches.html">Watches</a></li>
+              <li><a href="shoes.html">Shoes</a></li>
+              <li><a href="bags.html">Bags</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Customer Service</h4>
+            <ul>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Shipping Info</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Size Guide</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+            <!-- Newsletter Subscription -->
+            <div class="newsletter">
+              <h4 style="margin-top: 20px">Subscribe to our Newsletter</h4>
+              <form id="newsletter-form">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                  class="newsletter-input"
+                />
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 VALORA. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Wishlist Sidebar -->
+    <div class="sidebar" id="wishlist-sidebar">
+      <div class="sidebar-header">
+        <h3>Wishlist</h3>
+        <button class="close-sidebar" data-sidebar="wishlist">&times;</button>
+      </div>
+      <div class="sidebar-content" id="wishlist-content">
+        <p class="empty-message">Your wishlist is empty</p>
+      </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="sidebar" id="cart-sidebar">
+      <div class="sidebar-header">
+        <h3>Shopping Cart</h3>
+        <button class="close-sidebar" data-sidebar="cart">&times;</button>
+      </div>
+      <div class="sidebar-content" id="cart-content">
+        <p class="empty-message">Your cart is empty</p>
+      </div>
+      <div class="sidebar-footer">
+        <div class="cart-total">
+          <p>Total: $<span id="cart-total">0.00</span></p>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="modal-body" id="modal-body">
+          <!-- Product details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

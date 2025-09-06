@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bags - LUXE</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header/Navigation -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-left">
+            <a href="index.html" class="logo">VALORA</a>
+          </div>
+
+          <div class="nav-center">
+            <div class="nav-item dropdown">
+              <span class="nav-link"
+                >Categories <i class="fas fa-chevron-down"></i
+              ></span>
+              <div class="dropdown-content">
+                <a href="watches.html">Watches</a>
+                <a href="shoes.html">Shoes</a>
+                <a href="glasses.html">Glasses</a>
+                <a href="bags.html">Bags</a>
+                <a href="accessories.html">Other Accessories</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="nav-right">
+            <button class="nav-icon" id="wishlist-btn">
+              <i class="fas fa-heart"></i>
+              <span class="badge" id="wishlist-count">0</span>
+            </button>
+            <button class="nav-icon" id="cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="badge" id="cart-count">0</span>
+            </button>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav" id="mobile-nav">
+          <div class="mobile-nav-content">
+            <a href="index.html" class="mobile-nav-link">Home</a>
+            <div class="mobile-nav-dropdown">
+              <button class="mobile-nav-toggle">
+                Categories <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="mobile-nav-submenu">
+                <a href="watches.html" class="mobile-nav-link">Watches</a>
+                <a href="shoes.html" class="mobile-nav-link">Shoes</a>
+                <a href="glasses.html" class="mobile-nav-link">Glasses</a>
+                <a href="bags.html" class="mobile-nav-link">Bags</a>
+                <a href="accessories.html" class="mobile-nav-link"
+                  >Other Accessories</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Bags</h1>
+        <p>Luxury essentials for the modern lifestyle</p>
+      </div>
+    </section>
+
+    <!-- Filter and Sort Section -->
+    <section class="filter-section">
+      <div class="container">
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label for="price-filter">Price Range:</label>
+            <select id="price-filter" class="filter-select">
+              <option value="">All Prices</option>
+              <option value="0-500">Under $500</option>
+              <option value="500-1500">$500 - $1,500</option>
+              <option value="1500-3000">$1,500 - $3,000</option>
+              <option value="3000+">Above $3,000</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="brand-filter">Brand:</label>
+            <select id="brand-filter" class="filter-select">
+              <option value="">All Brands</option>
+              <option value="louis-vuitton">Louis Vuitton</option>
+              <option value="chanel">Chanel</option>
+              <option value="hermes">Hermès</option>
+              <option value="prada">Prada</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select" class="filter-select">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name A-Z</option>
+            </select>
+          </div>
+
+          <button class="clear-filters" id="clear-filters">
+            Clear Filters
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+      <div class="container">
+        <div class="products-grid" id="products-grid">
+          <!-- Products will be loaded dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>VALORA</h3>
+            <p>
+              Defining luxury through timeless elegance and exceptional
+              craftsmanship.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="watches.html">Watches</a></li>
+              <li><a href="shoes.html">Shoes</a></li>
+              <li><a href="bags.html">Bags</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Customer Service</h4>
+            <ul>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Shipping Info</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Size Guide</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+            <!-- Newsletter Subscription -->
+            <div class="newsletter">
+              <h4 style="margin-top: 20px">Subscribe to our Newsletter</h4>
+              <form id="newsletter-form">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                  class="newsletter-input"
+                />
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 VALORA. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Wishlist Sidebar -->
+    <div class="sidebar" id="wishlist-sidebar">
+      <div class="sidebar-header">
+        <h3>Wishlist</h3>
+        <button class="close-sidebar" data-sidebar="wishlist">&times;</button>
+      </div>
+      <div class="sidebar-content" id="wishlist-content">
+        <p class="empty-message">Your wishlist is empty</p>
+      </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="sidebar" id="cart-sidebar">
+      <div class="sidebar-header">
+        <h3>Shopping Cart</h3>
+        <button class="close-sidebar" data-sidebar="cart">&times;</button>
+      </div>
+      <div class="sidebar-content" id="cart-content">
+        <p class="empty-message">Your cart is empty</p>
+      </div>
+      <div class="sidebar-footer">
+        <div class="cart-total">
+          <p>Total: $<span id="cart-total">0.00</span></p>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">Checkout</button>
+      </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="modal-body" id="modal-body">
+          <!-- Product details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
