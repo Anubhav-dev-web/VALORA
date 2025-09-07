@@ -2,6 +2,8 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 let currentCategory = '';
+let searchTimeout = null;
+let currentSearchQuery = '';
 
 // DOM Elements
 const cartBtn = document.getElementById('cart-btn');
@@ -120,6 +122,9 @@ function setupEventListeners() {
     // Checkout button
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) checkoutBtn.addEventListener('click', showCheckout);
+    
+    // Search functionality
+    setupSearchEventListeners();
 }
 
 // Load page content based on current page
@@ -689,14 +694,371 @@ function debounce(func, wait) {
     };
 }
 
-// Search functionality (can be extended)
+// ===== SEARCH FUNCTIONALITY =====
+
+// Setup search event listeners
+function setupSearchEventListeners() {
+    // Desktop search
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const searchClear = document.getElementById('search-clear');
+    const searchResults = document.getElementById('search-results');
+    
+    // Mobile search
+    const mobileSearchInput = document.getElementById('mobile-search-input');
+    const mobileSearchBtn = document.getElementById('mobile-search-btn');
+    const mobileSearchClear = document.getElementById('mobile-search-clear');
+    const mobileSearchResults = document.getElementById('mobile-search-results');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce((e) => {
+            handleSearch(e.target.value, false);
+        }, 300));
+        
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim()) {
+                showSearchResults(false);
+            } else {
+                showSearchSuggestions(false);
+            }
+        });
+        
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch(searchInput.value);
+            }
+        });
+    }
+    
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            performSearch(searchInput.value);
+        });
+    }
+    
+    if (searchClear) {
+        searchClear.addEventListener('click', () => {
+            clearSearch(false);
+        });
+    }
+    
+    // Mobile search events
+    if (mobileSearchInput) {
+        mobileSearchInput.addEventListener('input', debounce((e) => {
+            handleSearch(e.target.value, true);
+        }, 300));
+        
+        mobileSearchInput.addEventListener('focus', () => {
+            if (mobileSearchInput.value.trim()) {
+                showSearchResults(true);
+            } else {
+                showSearchSuggestions(true);
+            }
+        });
+        
+        mobileSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch(mobileSearchInput.value);
+            }
+        });
+    }
+    
+    if (mobileSearchBtn) {
+        mobileSearchBtn.addEventListener('click', () => {
+            performSearch(mobileSearchInput.value);
+        });
+    }
+    
+    if (mobileSearchClear) {
+        mobileSearchClear.addEventListener('click', () => {
+            clearSearch(true);
+        });
+    }
+    
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+        const isSearchClick = e.target.closest('.search-container') || e.target.closest('.mobile-search-container');
+        if (!isSearchClick) {
+            hideSearchResults();
+        }
+    });
+}
+
+// Handle search input
+function handleSearch(query, isMobile = false) {
+    currentSearchQuery = query.trim();
+    
+    if (currentSearchQuery === '') {
+        showSearchSuggestions(isMobile);
+        return;
+    }
+    
+    if (currentSearchQuery.length < 2) {
+        hideSearchResults();
+        return;
+    }
+    
+    const results = searchProducts(currentSearchQuery);
+    displaySearchResults(results, isMobile);
+    showSearchResults(isMobile);
+}
+
+// Advanced search function
 function searchProducts(query) {
     const allProducts = getAllProducts();
-    return allProducts.filter(product => 
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.brand.toLowerCase().includes(query.toLowerCase()) ||
-        product.description.toLowerCase().includes(query.toLowerCase())
-    );
+    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
+    
+    return allProducts.filter(product => {
+        const searchableText = [
+            product.name,
+            getBrandDisplayName(product.brand),
+            product.description,
+            product.category
+        ].join(' ').toLowerCase();
+        
+        return searchTerms.every(term => searchableText.includes(term));
+    }).sort((a, b) => {
+        // Sort by relevance (exact name matches first, then brand matches)
+        const aNameMatch = a.name.toLowerCase().includes(query.toLowerCase()) ? 1 : 0;
+        const bNameMatch = b.name.toLowerCase().includes(query.toLowerCase()) ? 1 : 0;
+        
+        if (aNameMatch !== bNameMatch) {
+            return bNameMatch - aNameMatch;
+        }
+        
+        const aBrandMatch = getBrandDisplayName(a.brand).toLowerCase().includes(query.toLowerCase()) ? 1 : 0;
+        const bBrandMatch = getBrandDisplayName(b.brand).toLowerCase().includes(query.toLowerCase()) ? 1 : 0;
+        
+        if (aBrandMatch !== bBrandMatch) {
+            return bBrandMatch - aBrandMatch;
+        }
+        
+        return a.name.localeCompare(b.name);
+    });
+}
+
+// Display search results
+function displaySearchResults(results, isMobile = false) {
+    const container = isMobile ? 
+        document.getElementById('mobile-search-results') : 
+        document.getElementById('search-results');
+    
+    if (!container) return;
+    
+    const content = container.querySelector('.search-results-content');
+    
+    if (results.length === 0) {
+        content.innerHTML = `
+            <div class="no-search-results">
+                <i class="fas fa-search"></i>
+                <p>No products found for "${currentSearchQuery}"</p>
+                <small>Try different keywords or browse our categories</small>
+            </div>
+        `;
+        return;
+    }
+    
+    content.innerHTML = results.map(product => `
+        <div class="search-result-item" data-product-id="${product.id}">
+            <div class="search-result-image">
+                <img src="${product.image}" alt="${product.name}" />
+            </div>
+            <div class="search-result-details">
+                <div class="search-result-name">${highlightSearchTerm(product.name, currentSearchQuery)}</div>
+                <div class="search-result-brand">${highlightSearchTerm(getBrandDisplayName(product.brand), currentSearchQuery)}</div>
+                <div class="search-result-price">${formatPrice(product.price)}</div>
+            </div>
+            <div class="search-result-category">${product.category}</div>
+        </div>
+    `).join('');
+    
+    // Add click event listeners to search results
+    content.querySelectorAll('.search-result-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const productId = e.currentTarget.dataset.productId;
+            showProductModal(productId);
+            hideSearchResults();
+        });
+    });
+}
+
+// Show search suggestions
+function showSearchSuggestions(isMobile = false) {
+    const container = isMobile ? 
+        document.getElementById('mobile-search-results') : 
+        document.getElementById('search-results');
+    
+    if (!container) return;
+    
+    const content = container.querySelector('.search-results-content');
+    
+    const suggestions = [
+        'Rolex', 'Omega', 'Patek Philippe', 'Cartier',
+        'Louboutin', 'Jimmy Choo', 'Gucci',
+        'Louis Vuitton', 'Chanel', 'Hermès',
+        'Ray-Ban', 'Oakley', 'Prada', 'Tom Ford',
+        'Watches', 'Shoes', 'Bags', 'Glasses', 'Accessories'
+    ];
+    
+    content.innerHTML = `
+        <div class="search-suggestions">
+            <h4>Popular Searches</h4>
+            <div class="suggestion-tags">
+                ${suggestions.map(suggestion => `
+                    <span class="suggestion-tag" data-suggestion="${suggestion}">${suggestion}</span>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    // Add click event listeners to suggestions
+    content.querySelectorAll('.suggestion-tag').forEach(tag => {
+        tag.addEventListener('click', (e) => {
+            const suggestion = e.target.dataset.suggestion;
+            performSearch(suggestion);
+        });
+    });
+    
+    showSearchResults(isMobile);
+}
+
+// Perform search and navigate to results
+function performSearch(query) {
+    if (!query || query.trim() === '') return;
+    
+    const trimmedQuery = query.trim();
+    
+    // Update input fields
+    const searchInput = document.getElementById('search-input');
+    const mobileSearchInput = document.getElementById('mobile-search-input');
+    
+    if (searchInput) searchInput.value = trimmedQuery;
+    if (mobileSearchInput) mobileSearchInput.value = trimmedQuery;
+    
+    // Hide search results
+    hideSearchResults();
+    
+    // Close mobile menu if open
+    closeMobileMenu();
+    
+    // Get search results
+    const results = searchProducts(trimmedQuery);
+    
+    // If on homepage, show results in featured section
+    if (currentCategory === 'home') {
+        const featuredGrid = document.getElementById('featured-products-grid');
+        const featuredTitle = document.querySelector('.featured-products .section-title');
+        
+        if (featuredGrid && featuredTitle) {
+            featuredTitle.textContent = `Search Results for "${trimmedQuery}"`;
+            renderProducts(results, featuredGrid);
+            
+            // Scroll to results
+            document.querySelector('.featured-products').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    } else {
+        // On category pages, replace category products with search results
+        const productsGrid = document.getElementById('products-grid');
+        const pageHeader = document.querySelector('.page-header h1');
+        
+        if (productsGrid && pageHeader) {
+            pageHeader.textContent = `Search Results for "${trimmedQuery}"`;
+            renderProducts(results, productsGrid);
+            
+            // Scroll to results
+            document.querySelector('.products-section').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+    
+    // Show notification
+    showNotification(`Found ${results.length} product${results.length !== 1 ? 's' : ''} for "${trimmedQuery}"`);
+}
+
+// Clear search
+function clearSearch(isMobile = false) {
+    const searchInput = isMobile ? 
+        document.getElementById('mobile-search-input') : 
+        document.getElementById('search-input');
+    
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+    }
+    
+    currentSearchQuery = '';
+    hideSearchResults();
+    
+    // Reset to original content if needed
+    if (currentCategory === 'home') {
+        const featuredGrid = document.getElementById('featured-products-grid');
+        const featuredTitle = document.querySelector('.featured-products .section-title');
+        
+        if (featuredGrid && featuredTitle) {
+            featuredTitle.textContent = 'Featured Products';
+            loadFeaturedProducts();
+        }
+    } else if (currentCategory !== '') {
+        const productsGrid = document.getElementById('products-grid');
+        const pageHeader = document.querySelector('.page-header h1');
+        
+        if (productsGrid && pageHeader) {
+            pageHeader.textContent = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+            loadCategoryProducts(currentCategory);
+        }
+    }
+}
+
+// Show search results dropdown
+function showSearchResults(isMobile = false) {
+    const container = isMobile ? 
+        document.getElementById('mobile-search-results') : 
+        document.getElementById('search-results');
+    
+    if (container) {
+        container.classList.add('active');
+    }
+}
+
+// Hide search results dropdown
+function hideSearchResults() {
+    const containers = [
+        document.getElementById('search-results'),
+        document.getElementById('mobile-search-results')
+    ];
+    
+    containers.forEach(container => {
+        if (container) {
+            container.classList.remove('active');
+        }
+    });
+}
+
+// Highlight search terms in results
+function highlightSearchTerm(text, query) {
+    if (!query || query.trim() === '') return text;
+    
+    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
+    let highlightedText = text;
+    
+    searchTerms.forEach(term => {
+        const regex = new RegExp(`(${escapeRegex(term)})`, 'gi');
+        highlightedText = highlightedText.replace(regex, '<mark>$1</mark>');
+    });
+    
+    return highlightedText;
+}
+
+// Escape special regex characters
+function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // Keyboard navigation

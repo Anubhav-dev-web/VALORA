@@ -39,6 +39,32 @@
           </div>
 
           <div class="nav-right">
+            <!-- Search Functionality -->
+            <div class="search-container">
+              <div class="search-input-wrapper">
+                <input
+                  type="text"
+                  id="search-input"
+                  class="search-input"
+                  placeholder="Search luxury products..."
+                  autocomplete="off"
+                />
+                <button class="search-btn" id="search-btn">
+                  <i class="fas fa-search"></i>
+                </button>
+                <button class="search-clear" id="search-clear">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+
+              <!-- Search Results Dropdown -->
+              <div class="search-results" id="search-results">
+                <div class="search-results-content">
+                  <!-- Results will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+
             <button class="nav-icon" id="wishlist-btn">
               <i class="fas fa-heart"></i>
               <span class="badge" id="wishlist-count">0</span>
@@ -58,6 +84,30 @@
         <!-- Mobile Navigation Menu -->
         <div class="mobile-nav" id="mobile-nav">
           <div class="mobile-nav-content">
+            <!-- Mobile Search -->
+            <div class="mobile-search-container">
+              <div class="search-input-wrapper">
+                <input
+                  type="text"
+                  id="mobile-search-input"
+                  class="search-input"
+                  placeholder="Search luxury products..."
+                  autocomplete="off"
+                />
+                <button class="search-btn" id="mobile-search-btn">
+                  <i class="fas fa-search"></i>
+                </button>
+                <button class="search-clear" id="mobile-search-clear">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div class="search-results" id="mobile-search-results">
+                <div class="search-results-content">
+                  <!-- Mobile search results -->
+                </div>
+              </div>
+            </div>
+
             <a href="index.html" class="mobile-nav-link">Home</a>
             <div class="mobile-nav-dropdown">
               <button class="mobile-nav-toggle">
@@ -234,7 +284,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2024 VALORA. All rights reserved.</p>
+          <p>&copy; 2025 VALORA. All rights reserved.</p>
         </div>
       </div>
     </footer>
